@@ -1,5 +1,5 @@
 # django-api
-<h2>Hello World</h2>
+<h2 style="color:red;">Hello World</h2>
 This is the repository for builind up Rest Api in Python's Django Rest Framework
 
 <table>
