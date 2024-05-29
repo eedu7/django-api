@@ -24,6 +24,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 3
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -51,6 +53,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.github",
     "allauth.socialaccount.providers.twitter",
     "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.facebook",
 ]
 
 MIDDLEWARE = [
@@ -64,6 +67,8 @@ MIDDLEWARE = [
     # allauth-middleware
     "allauth.account.middleware.AccountMiddleware",
 ]
+
+LOGOUT_REDIRECT_URL = "http://127.0.0.1:8000/dj-rest-auth/login/"
 
 ROOT_URLCONF = 'Dj_Configuration.urls'
 
@@ -134,3 +139,53 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = "http:127.0.0.1:8000/dj-rest-auth/login/"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        # "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
+    ]
+}
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+REST_USE_JWT = True
+REST_AUTH = {
+    "SESSION_LOGIN": True,
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "my-app-auth",
+    "JWT_AUTH_REFRESH_COOKIE": "my-refresh-token",
+    "JWT_AUTH_HTTPONLy": False,
+}
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = "mueedahmad067@gmail.com"
+# EMAIL_HOST_PASSWORD = "mqhqdvgpbkewetle"
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "189829138062-p7a9mtdep1ln7gshauikm84oojhk8cjk.apps.googleusercontent.com"
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_PARAMS = {
+    "redirect_uri": "http://127.0.0.1:8000/dj-rest-auth/google/login/callback/"
+}
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+    'JTI_CLAIM': 'jti',
+}
